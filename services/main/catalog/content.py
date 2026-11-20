@@ -50,8 +50,8 @@ def shorten(value, limit):
     if len(value) <= limit:
         return value
     prefix = value[:limit - 1]
-    if " " in prefix:
-        prefix = prefix.rsplit(" ", 1)[0]
+    if not value[limit - 1].isspace() and not prefix.endswith(" "):
+        prefix = prefix.rsplit(" ", 1)[0] if " " in prefix else ""
     return prefix.rstrip() + "…"
 
 

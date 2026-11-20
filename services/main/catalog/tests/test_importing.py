@@ -8,7 +8,7 @@ from uuid import uuid4
 from django.core.management.base import CommandError
 from django.test import SimpleTestCase, TestCase
 
-from catalog.content import plain_text, sanitize_html, short_description
+from catalog.content import plain_text, sanitize_html, short_description, shorten
 from catalog.importing import import_content, load_identity_map
 from catalog.models import Brand, Industry, Review, Reviewer
 
@@ -122,6 +122,11 @@ class ContentTests(SimpleTestCase):
         self.assertEqual(short_description("", "<p>Body</p>"), "Body")
         self.assertLessEqual(len(short_description("word " * 300, "")), 500)
         self.assertEqual(short_description("", ""), "")
+
+    def test_shortening_preserves_word_boundaries(self):
+        self.assertEqual(short_description("x" * 501, ""), "…")
+        self.assertEqual(shorten("first second third", 13), "first second…")
+        self.assertEqual(shorten("first second third", 12), "first…")
 
     def test_identity_map_validation(self):
         with tempfile.TemporaryDirectory() as directory:

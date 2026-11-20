@@ -1,4 +1,4 @@
-{% load vite %}
+{% load vite static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Explore consumer brands and read customer reviews to make a more informed choice.">
   <title>{% block title %}Consumer Reviews{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'frontend/favicon.svg' %}">
   {% vite_css 'scss/main.scss' %}
   {% vite_dev_client %}
 </head>
