@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=75,<83"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "review-auth"
+version = "0.1.0"
+description = "Authentication contracts and checks shared by the review services"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]

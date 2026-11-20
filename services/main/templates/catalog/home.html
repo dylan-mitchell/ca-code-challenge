@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Consumer Reviews — Find your next great choice{% endblock %}
+{% block content %}
+<section class="hero"><div class="container hero__inner"><p class="eyebrow">Confidence starts with a little perspective</p><h1>Real experiences.<br>Better decisions.</h1><p class="hero__intro">Get to know the brands behind everyday choices. Explore customer experiences and find the details that matter to you.</p><a class="button button--light" href="{% url 'catalog:brand-list' %}">Browse brands <span aria-hidden="true">→</span></a></div></section>
+<section class="section container" aria-labelledby="top-brands"><div class="section-heading"><div><p class="eyebrow">Discover your options</p><h2 id="top-brands">Top-rated brands</h2></div><a class="text-link" href="{% url 'catalog:brand-list' %}">Explore all brands <span aria-hidden="true">→</span></a></div><div class="card-grid">{% for brand in brands %}{% include 'catalog/components/brand_card.html' %}{% empty %}<p class="state-panel">No brands are available yet.</p>{% endfor %}</div></section>
+<section class="section section--last container" aria-labelledby="recent-reviews"><div class="section-heading"><div><p class="eyebrow">From the community</p><h2 id="recent-reviews">Recent reviews</h2></div></div><div class="card-grid">{% for item in recent_reviews %}{% include 'catalog/components/review_card.html' with review=item.review snippet=item.snippet %}{% empty %}<p class="state-panel">No reviews are available yet.</p>{% endfor %}</div></section>
+{% endblock %}

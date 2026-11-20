@@ -1,0 +1,50 @@
+@use "tokens";
+
+.directory-hero { padding-block: var(--space-7); }
+.directory-hero h1 { font-size: clamp(2rem, 4vw, 2.75rem); }
+.directory-hero p { color: var(--color-muted); margin-top: var(--space-3); max-width: 35rem; }
+.directory-toolbar { display: flex; flex-direction: column; gap: var(--space-5); padding-bottom: var(--space-6); margin-bottom: var(--space-5); border-bottom: 1px solid var(--color-border); }
+.industry-filter { padding: 0; margin: 0; border: 0; min-width: 0; }
+.industry-filter legend, .sort-control label { font-size: 0.82rem; font-weight: 700; margin-bottom: var(--space-3); }
+.industry-filter__options { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
+.industry-filter__option { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 2.75rem; font-size: 0.88rem; cursor: pointer; }
+.industry-filter input { accent-color: var(--color-primary-dark); width: 1.1rem; height: 1.1rem; margin: 0; flex-shrink: 0; }
+.industry-filter__hint { color: var(--color-muted); font-size: 0.85rem; }
+.sort-control { min-width: 0; }
+.sort-control label { display: block; }
+.sort-control select { width: 100%; min-height: 2.75rem; padding: var(--space-2) var(--space-6) var(--space-2) var(--space-3); border: 1px solid var(--color-border); border-radius: 0.4rem; background-color: var(--color-card); color: var(--color-text); }
+.results-summary { margin-bottom: var(--space-5); font-size: 0.9rem; color: var(--color-muted); font-weight: 400; letter-spacing: 0; }
+.results-heading:focus { outline: 3px solid var(--color-focus); outline-offset: 4px; }
+.detail-hero { padding-block: var(--space-5) var(--space-7); border-bottom: 1px solid var(--color-border); display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
+.detail-layout { padding-block: var(--space-6) var(--space-7); }
+.detail-layout--narrow { max-width: 53rem; }
+.detail-section { margin-top: var(--space-6); }
+.editor-pick--detail { background: var(--color-primary-soft); border: 0; border-left: 3px solid var(--color-primary); padding: var(--space-5); border-radius: var(--radius); }
+.editor-pick--detail > * + * { margin-top: var(--space-3); }
+.review-detail > * + * { margin-top: var(--space-5); }
+.review-item > * + * { margin-top: var(--space-3); }
+.review-item .text-link { display: inline-block; }
+.page-intro { max-width: 44rem; color: var(--color-muted); }
+.detail-hero__inner { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
+.detail-hero h1 { max-width: 52rem; font-size: clamp(1.9rem, 4vw, 2.8rem); }
+.breadcrumbs { display: flex; flex-wrap: wrap; gap: var(--space-2); font-size: 0.85rem; margin-bottom: var(--space-5); }
+.brand-meta { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); padding: 0; margin: var(--space-2) 0 0; }
+.brand-meta div { min-width: 0; }
+.brand-meta dt { color: var(--color-muted); font-size: 0.75rem; }
+.brand-meta dd { margin: var(--space-1) 0 0; font-size: 0.92rem; overflow-wrap: anywhere; }
+.content-column { max-width: 53rem; }
+.review-list { display: grid; gap: var(--space-5); }
+.review-item { padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-card); }
+.review-item__head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3); }
+.review-item__title { font-size: 1.08rem; }
+.review-item__title a { color: var(--color-text); text-decoration: none; }
+.review-item__title a:hover { text-decoration: underline; }
+.review-item .review-byline { margin-block: var(--space-3) var(--space-4); }
+.detail-pick { border-left: 3px solid var(--color-primary); }
+.detail-pick h3 { margin-bottom: var(--space-3); }
+.detail-pick .review-byline { margin-top: var(--space-4); }
+@media (min-width: tokens.$wide) {
+  .directory-toolbar { flex-direction: row; align-items: flex-start; justify-content: space-between; gap: var(--space-6); }
+  .sort-control { flex: 0 0 13rem; }
+  .content-panel { padding: var(--space-6); }
+}

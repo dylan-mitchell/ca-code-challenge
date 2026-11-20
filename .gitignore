@@ -1,10 +1,28 @@
 .env
+.env.app
+.pgadmin/
 .DS_Store
 wp-content/upgrade/
 wp-content/cache/
 wp-content/backup-db/
 wp-content/uploads/wp-personal-data-exports/
 *.log
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+**/build/
+.pytest_cache/
+.ruff_cache/
+.wheels/
+node_modules/
+frontend/dist/
+frontend/coverage/
+staticfiles/
+.import-handoff/
+artifacts/
+output/playwright/
+.playwright-cli/
 
 # Interviewer-only material — never shipped to candidates.
 interviewer/

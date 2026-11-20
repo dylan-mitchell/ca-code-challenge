@@ -1,0 +1,7 @@
+<article class="review-card">
+  <a class="review-card__brand" href="{% url 'catalog:brand-detail' review.brand.slug %}">{{ review.brand.name }}</a>
+  <p class="rating"><span class="stars" aria-hidden="true">★</span> <strong>{{ review.rating }} / 5</strong></p>
+  <h3 class="review-card__title"><a href="{% url 'catalog:review-detail' review.slug %}">{{ review.title }}</a></h3>
+  <p class="review-card__snippet">{{ snippet }}</p>
+  <p class="review-byline">{{ review.display_name }} · <time datetime="{{ review.published_at|date:'c' }}">{{ review.published_at|date:'M j, Y' }}</time></p>
+</article>

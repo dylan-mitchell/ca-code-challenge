@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}{{ review.title }} — Consumer Reviews{% endblock %}
+{% block content %}
+<div class="container detail-layout detail-layout--narrow"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{% url 'catalog:brand-list' %}">All brands</a><span aria-hidden="true">/</span><a href="{% url 'catalog:brand-detail' review.brand.slug %}">{{ review.brand.name }}</a><span aria-hidden="true">/</span><span>Review</span></nav>
+  <article class="content-panel review-detail"><a class="review-card__brand" href="{% url 'catalog:brand-detail' review.brand.slug %}">{{ review.brand.name }}</a><h1>{{ review.title }}</h1><p class="rating"><span class="stars" aria-hidden="true">★</span> <strong>{{ review.rating }} / 5</strong></p><p class="review-byline">{{ review.display_name }}{% if review.reviewer_location %} · {{ review.reviewer_location }}{% endif %} · <time datetime="{{ review.published_at|date:'c' }}">{{ review.published_at|date:'F j, Y' }}</time></p>{% if review.body_html %}{# Imported bodies have passed the semantic HTML sanitizer. #}<div class="prose">{{ review.body_html|safe }}</div>{% endif %}<a class="text-link" href="{% url 'catalog:brand-detail' review.brand.slug %}">All {{ review.brand.name }} reviews <span aria-hidden="true">→</span></a></article>
+</div>
+{% endblock %}
