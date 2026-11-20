@@ -167,7 +167,7 @@ python3 scripts/manage_local.py main runserver 8000  # Separate terminal
 
 With both services running, `python3 scripts/check_http_concurrency.py` verifies that ordinary requests still complete while idle connections or incomplete HTTP headers remain open. This read-only check exercises the actual Gunicorn configuration without changing application data.
 
-With the imported stack running, `python3 scripts/smoke_test.py` checks the real HTTP flow, same-token role demotion, revocation, and public availability during an auth outage. It temporarily edits Acme and stops auth, then restores Acme, restarts auth, and removes its temporary user. Run it when nobody else is editing the demo. See [verification.md](verification.md) for observed results and [walkthrough.md](walkthrough.md) for a guided code tour.
+With the imported stack running, `python3 scripts/smoke_test.py` checks the real HTTP flow, same-token role demotion, revocation, and public availability during an auth outage. It temporarily edits Acme and stops auth, then restores Acme, restarts auth, and removes its temporary user. Run it when nobody else is editing the demo.
 
 Run just the shared library independently, with neither Django nor a database installed:
 
