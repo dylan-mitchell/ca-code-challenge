@@ -1,0 +1,99 @@
+services:
+  postgres:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?Run make app-env first}
+      MAIN_DB_PASSWORD: ${MAIN_DB_PASSWORD:?Run make app-env first}
+      AUTH_DB_PASSWORD: ${AUTH_DB_PASSWORD:?Run make app-env first}
+    ports: ["127.0.0.1:${POSTGRES_PORT:-55432}:5432"]
+    volumes:
+      - app_postgres_data:/var/lib/postgresql/data
+      - ./scripts/postgres_init.sql:/docker-entrypoint-initdb.d/01-apps.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+  auth:
+    build: {context: ., target: auth}
+    environment:
+      SECRET_KEY: ${AUTH_DJANGO_SECRET_KEY:?Run make app-env first}
+      DEBUG: ${APP_DEBUG:-1}
+      ALLOWED_HOSTS: ${APP_ALLOWED_HOSTS:-localhost,127.0.0.1,auth}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: auth_db
+      DB_USER: auth_app
+      DB_PASSWORD: ${AUTH_DB_PASSWORD:?Run make app-env first}
+      SOURCE_DB_HOST: import-source
+      SOURCE_DB_PORT: 3306
+      SOURCE_DB_NAME: wp
+      SOURCE_DB_USER: import_reader
+      SOURCE_DB_PASSWORD: ${SOURCE_DB_PASSWORD:?Run make app-env first}
+      INTROSPECTION_CLIENT_ID: ${INTROSPECTION_CLIENT_ID:-main-app}
+      INTROSPECTION_CLIENT_SECRET: ${INTROSPECTION_CLIENT_SECRET:?Run make app-env first}
+      AUTH_IMPORT_PASSWORD: ${AUTH_IMPORT_PASSWORD:-}
+    ports: ["127.0.0.1:${AUTH_PORT:-8001}:8000"]
+    volumes:
+      - ./.import-handoff:/import-handoff
+    depends_on:
+      postgres: {condition: service_healthy}
+  main:
+    build: {context: ., target: main}
+    environment:
+      SECRET_KEY: ${MAIN_DJANGO_SECRET_KEY:?Run make app-env first}
+      DEBUG: ${APP_DEBUG:-1}
+      ALLOWED_HOSTS: ${APP_ALLOWED_HOSTS:-localhost,127.0.0.1,main}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: main_db
+      DB_USER: main_app
+      DB_PASSWORD: ${MAIN_DB_PASSWORD:?Run make app-env first}
+      SOURCE_DB_HOST: import-source
+      SOURCE_DB_PORT: 3306
+      SOURCE_DB_NAME: wp
+      SOURCE_DB_USER: import_reader
+      SOURCE_DB_PASSWORD: ${SOURCE_DB_PASSWORD:?Run make app-env first}
+      AUTH_INTROSPECTION_URL: http://auth:8000/api/tokens/introspect/
+      INTROSPECTION_CLIENT_ID: ${INTROSPECTION_CLIENT_ID:-main-app}
+      INTROSPECTION_CLIENT_SECRET: ${INTROSPECTION_CLIENT_SECRET:?Run make app-env first}
+      AUTH_TIMEOUT_SECONDS: 3
+      FRONTEND_DIST: /app/frontend/dist
+      VITE_DEV_SERVER_URL: ${VITE_DEV_SERVER_URL:-}
+    ports: ["127.0.0.1:${MAIN_PORT:-8000}:8000"]
+    volumes:
+      - ./.import-handoff:/import-handoff:ro
+    depends_on:
+      postgres: {condition: service_healthy}
+  import-source:
+    image: mariadb:11.8
+    profiles: ["import"]
+    environment:
+      MARIADB_ROOT_PASSWORD: ${SOURCE_ROOT_PASSWORD:?Run make app-env first}
+      MARIADB_DATABASE: wp
+      MARIADB_USER: import_reader
+      MARIADB_PASSWORD: ${SOURCE_DB_PASSWORD:?Run make app-env first}
+    ports: ["127.0.0.1:${SOURCE_PORT:-53306}:3306"]
+    volumes:
+      - import_source_data:/var/lib/mysql
+      - ./db/dump.sql:/docker-entrypoint-initdb.d/01-dump.sql:ro
+      - ./scripts/source_reader.sql:/docker-entrypoint-initdb.d/02-reader.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 3s
+      timeout: 5s
+      retries: 40
+  frontend:
+    image: node:24-bookworm-slim
+    profiles: ["dev"]
+    working_dir: /frontend
+    command: sh -c "npm ci && npm run dev -- --host 0.0.0.0"
+    ports: ["127.0.0.1:${VITE_PORT:-5173}:5173"]
+    volumes:
+      - ./frontend:/frontend
+      - frontend_modules:/frontend/node_modules
+volumes:
+  app_postgres_data:
+  import_source_data:
+  frontend_modules:

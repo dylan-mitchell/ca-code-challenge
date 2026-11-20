@@ -1,0 +1,12 @@
+# Shared package is built locally; install with --find-links .wheels.
+review-auth==0.1.0
+Django==5.2.19
+asgiref==3.13.0
+sqlparse==0.6.1
+psycopg[binary]==3.3.9
+typing-extensions==4.16.0
+PyMySQL==1.2.4
+nh3==0.3.8
+gunicorn==25.3.0
+packaging==26.3
+whitenoise==6.12.0

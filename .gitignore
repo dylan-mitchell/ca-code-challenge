@@ -20,6 +20,8 @@ frontend/coverage/
 staticfiles/
 .import-handoff/
 artifacts/
+output/playwright/
+.playwright-cli/
 
 # Interviewer-only material — never shipped to candidates.
 interviewer/

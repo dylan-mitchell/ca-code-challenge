@@ -1,0 +1,14 @@
+.git
+.env
+.env.app
+.venv
+.wheels
+.import-handoff
+artifacts
+**/__pycache__
+**/node_modules
+**/dist
+**/build
+**/*.egg-info
+wp-content
+db
