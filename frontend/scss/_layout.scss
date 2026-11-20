@@ -1,0 +1,31 @@
+@use "tokens";
+
+.container { width: min(100% - 2rem, var(--max-width)); margin-inline: auto; }
+.site-header { background: var(--color-card); border-bottom: 1px solid var(--color-border); }
+.site-header__inner { min-height: 5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); padding-block: var(--space-4); }
+.site-logo { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 1.05rem; font-weight: 750; letter-spacing: -0.035em; text-decoration: none; color: var(--color-text); }
+.site-logo__mark { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; color: var(--color-on-dark); background: var(--color-primary); }
+.site-nav { display: flex; gap: var(--space-2); }
+.site-nav a { display: inline-flex; align-items: center; min-height: 2.75rem; padding-inline: var(--space-3); text-decoration: none; color: var(--color-muted); font-size: 0.95rem; }
+.site-nav [aria-current="page"] { color: var(--color-primary-dark); font-weight: 650; }
+.hero { padding-block: var(--space-7); background: linear-gradient(120deg, var(--color-primary-dark), var(--color-primary)); color: var(--color-on-dark); }
+.hero__inner { max-width: 70rem; }
+.hero h1 { max-width: 44rem; }
+.hero__intro { max-width: 40rem; margin-top: var(--space-5); font-size: 1.12rem; color: #e0eeea; }
+.hero .button { margin-top: var(--space-6); }
+.eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 700; margin-bottom: var(--space-4); }
+.section { padding-block: var(--space-7); }
+.section + .section { padding-top: 0; }
+.section-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-5); }
+.text-link { font-weight: 600; }
+.card-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+.section--last { padding-bottom: var(--space-7); }
+.site-footer { margin-top: var(--space-7); background: var(--color-footer); color: var(--color-on-dark); padding-block: var(--space-7); }
+.site-footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-5); }
+.site-footer__note { color: #c4d5cf; font-size: 0.85rem; max-width: 27rem; }
+@media (min-width: tokens.$wide) {
+  .container { width: min(100% - 3rem, var(--max-width)); }
+  .hero { padding-block: 4.5rem; }
+  .section { padding-block: var(--space-8); }
+  .card-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); }
+}

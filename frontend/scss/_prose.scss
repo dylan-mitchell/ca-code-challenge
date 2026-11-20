@@ -1,0 +1,11 @@
+.prose {
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+  > :first-child { margin-top: 0; }
+  > :last-child { margin-bottom: 0; }
+  p, ul, ol, blockquote { margin: 0 0 var(--space-5); }
+  h2, h3, h4, h5, h6 { margin: var(--space-6) 0 var(--space-4); }
+  ul, ol { padding-left: var(--space-5); }
+  li + li { margin-top: var(--space-2); }
+  blockquote { border-left: 3px solid var(--color-primary); padding-left: var(--space-5); color: var(--color-muted); }
+}
