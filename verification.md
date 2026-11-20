@@ -69,3 +69,25 @@ These checks cover the local challenge configuration. They do not claim a
 production deployment, load test, exhaustive accessibility audit or support for
 every browser. The original WordPress source, SQL dump and reference CSS remain
 unchanged.
+
+## 2026-11-20 — Gunicorn concurrency regression
+
+Both service images now explicitly use two `gthread` workers with four threads
+per worker. The worker-health timeout remains at its default of 30 seconds;
+this is not a per-request deadline with threaded workers.
+
+- A disposable Gunicorn process using the old single synchronous worker
+  reproduced the stall: a valid GET timed out while idle connections stayed open.
+- After rebuilding and starting both services, `python3 scripts/check_http_concurrency.py`
+  passed all four cases: main and auth with two idle connections, then with two
+  incomplete HTTP requests. Each case completed three ordinary requests while
+  the held connections remained open; the slowest response was 0.127 seconds.
+- The existing `python3 scripts/smoke_test.py` passed again, including login,
+  introspection, editor writes, immediate role demotion, revocation, atomic
+  validation, auth-outage behavior and public pages. It restored Acme's previous
+  values, restarted auth and removed its temporary account.
+- An independent agent reviewed the server configuration, regression script
+  and documentation with no actionable findings.
+
+This is a focused concurrency regression, not a load test. The full unit and
+frontend suites reported above were not rerun for this server configuration change.

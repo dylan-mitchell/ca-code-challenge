@@ -21,11 +21,11 @@ WORKDIR /app
 FROM runtime AS auth
 COPY services/auth /app/services/auth
 WORKDIR /app/services/auth
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--access-logfile", "-"]
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--worker-class", "gthread", "--workers", "2", "--threads", "4", "--access-logfile", "-"]
 
 FROM runtime AS main
 COPY services/main /app/services/main
 COPY --from=frontend-build /frontend/dist /app/frontend/dist
 WORKDIR /app/services/main
 RUN SECRET_KEY=asset-build-only DEBUG=0 python manage.py collectstatic --noinput
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--access-logfile", "-"]
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--worker-class", "gthread", "--workers", "2", "--threads", "4", "--access-logfile", "-"]

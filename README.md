@@ -31,6 +31,8 @@ make app-import                # Rerun the content import safely
 
 Ports, Django secrets, separate database passwords, the introspection service credential, and the initial demo password are configured in `.env.app`; names and defaults are documented in `.env.app.example`. `make app-env` creates this file once without printing or overwriting secrets. PostgreSQL listens locally on 55432 and the isolated source MariaDB on 53306 by default. This is a local development configuration; deployment/TLS are outside the exercise.
 
+Both services run Gunicorn with two `gthread` workers and four threads per worker. This allows concurrent requests when a client opens a connection but has not finished sending its request. These are modest local defaults, not production capacity tuning; Gunicorn's worker timeout remains 30 seconds.
+
 To inspect the imported PostgreSQL data, run `make db-viewer` and open <http://127.0.0.1:5050>. This starts the optional pgAdmin container with two saved connections: **Main app (read only)** and **Auth service (read only)**. It uses local desktop mode, so no pgAdmin login or database-password entry is needed. The web port binds only to `127.0.0.1`.
 
 Expand a connection → Databases → `main_db` or `auth_db` → Schemas → public → Tables. Right-click a table and choose **View/Edit Data → All Rows**; despite that menu's name, PostgreSQL denies writes to these reader accounts. Start with `catalog_brand`, `catalog_review`, `catalog_reviewer`, or `accounts_user`.
@@ -162,6 +164,8 @@ python3 scripts/manage_local.py main runserver 8000  # Separate terminal
 ## Tests and shared-package releases
 
 `make test` runs shared-package tests, both Django suites against disposable PostgreSQL test databases, migration-drift checks, frontend behavior tests, TypeScript checks, and the production asset build. Runtime database roles have no test-database creation privilege; the test helper supplies separate admin credentials only to test commands.
+
+With both services running, `python3 scripts/check_http_concurrency.py` verifies that ordinary requests still complete while idle connections or incomplete HTTP headers remain open. This read-only check exercises the actual Gunicorn configuration without changing application data.
 
 With the imported stack running, `python3 scripts/smoke_test.py` checks the real HTTP flow, same-token role demotion, revocation, and public availability during an auth outage. It temporarily edits Acme and stops auth, then restores Acme, restarts auth, and removes its temporary user. Run it when nobody else is editing the demo. See [verification.md](verification.md) for observed results and [walkthrough.md](walkthrough.md) for a guided code tour.
 
