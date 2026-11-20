@@ -1,0 +1,27 @@
+{% load vite %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore consumer brands and read customer reviews to make a more informed choice.">
+  <title>{% block title %}Consumer Reviews{% endblock %}</title>
+  {% vite_css 'scss/main.scss' %}
+  {% vite_dev_client %}
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-logo" href="{% url 'catalog:home' %}" aria-label="Consumer Reviews home"><span class="site-logo__mark" aria-hidden="true">✓</span>Consumer Reviews</a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="{% url 'catalog:home' %}"{% if nav_section == 'home' %} aria-current="page"{% endif %}>Home</a>
+        <a href="{% url 'catalog:brand-list' %}"{% if nav_section == 'brands' %} aria-current="page"{% endif %}>Brands</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content">{% block content %}{% endblock %}</main>
+  <footer class="site-footer"><div class="container site-footer__inner"><p class="site-footer__name">Consumer Reviews</p><p>Real experiences. More informed choices.</p><p class="site-footer__note">A demonstration directory using sample review data.</p></div></footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

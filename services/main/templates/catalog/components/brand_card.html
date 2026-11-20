@@ -1,0 +1,7 @@
+<article class="brand-card">
+  <div class="badge-list">{% for industry in brand.industries.all %}<span class="badge">{{ industry.name }}</span>{% endfor %}</div>
+  <h3 class="brand-card__title"><a href="{% url 'catalog:brand-detail' brand.slug %}">{{ brand.name }}</a></h3>
+  <p class="rating">{% if brand.average_rating is not None %}<span class="stars" aria-hidden="true">★</span> <strong>{{ brand.average_rating|floatformat:2 }}</strong><span class="muted"> / 5 · {{ brand.review_count }} review{{ brand.review_count|pluralize }}</span>{% else %}<span class="muted">Not rated yet</span>{% endif %}</p>
+  {% if brand.short_description %}<p class="brand-card__description">{{ brand.short_description }}</p>{% endif %}
+  <div class="brand-card__footer"><a class="text-link" href="{% url 'catalog:brand-detail' brand.slug %}">View reviews <span aria-hidden="true">→</span><span class="sr-only"> for {{ brand.name }}</span></a></div>
+</article>

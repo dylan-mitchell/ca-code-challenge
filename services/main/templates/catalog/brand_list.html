@@ -1,0 +1,7 @@
+{% extends 'base.html' %}{% load vite %}
+{% block title %}Browse brands — Consumer Reviews{% endblock %}
+{% block content %}
+<section class="directory-hero container"><p class="eyebrow">Find your next great choice</p><h1>Explore brands</h1><p class="page-intro">Compare brands, explore industries, and learn from customer experiences.</p></section>
+<div class="container section--last"><div id="brand-list"><p class="state-panel" role="status">Loading brands…</p></div><noscript><style>#brand-list { display: none; }</style><p class="state-panel">Enable JavaScript to filter and browse this directory. You can also explore brands and recent reviews on the <a href="{% url 'catalog:home' %}">homepage</a>.</p></noscript></div>
+{% endblock %}
+{% block scripts %}{% vite_js 'src/main.tsx' %}{% endblock %}

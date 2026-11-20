@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Page not found — Consumer Reviews{% endblock %}
+{% block content %}<section class="container section section--last"><p class="eyebrow">404</p><h1>This page couldn't be found.</h1><p>The brand or review may no longer be available.</p><a class="button" href="{% url 'catalog:brand-list' %}">Browse brands</a></section>{% endblock %}
