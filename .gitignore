@@ -1,5 +1,6 @@
 .env
 .env.app
+.pgadmin/
 .DS_Store
 wp-content/upgrade/
 wp-content/cache/

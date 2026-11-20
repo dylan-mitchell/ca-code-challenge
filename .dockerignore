@@ -1,6 +1,7 @@
 .git
 .env
 .env.app
+.pgadmin
 .venv
 .wheels
 .import-handoff

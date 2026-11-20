@@ -2,7 +2,7 @@ SHELL := /bin/bash
 COMPOSE := docker compose
 WPCLI := $(COMPOSE) run --rm wpcli
 
-.PHONY: help up down restart logs reset wp bootstrap dump status app-env app-build app-up app-migrate app-import app-setup app-logs app-down test
+.PHONY: help up down restart logs reset wp bootstrap dump status app-env app-build app-up app-migrate app-import app-setup app-logs app-down test db-viewer
 
 help:
 	@echo "Targets:"
@@ -19,6 +19,7 @@ help:
 	@echo "  app-import      Rerun the create-only import from the committed dump"
 	@echo "  app-build       Rebuild application images after code changes"
 	@echo "  test            Run Python and frontend checks in containers"
+	@echo "  db-viewer       Open a local pgAdmin viewer with read-only database accounts"
 
 up: app-env
 	$(COMPOSE) up -d db wordpress phpmyadmin
@@ -69,7 +70,10 @@ app-logs:
 	$(COMPOSE) logs -f auth main
 
 app-down:
-	$(COMPOSE) stop auth main postgres import-source frontend
+	$(COMPOSE) stop auth main postgres import-source frontend pgadmin
+
+db-viewer: app-env
+	python3 scripts/setup_pgadmin.py
 
 test: app-env
 	python3 scripts/test_stack.py

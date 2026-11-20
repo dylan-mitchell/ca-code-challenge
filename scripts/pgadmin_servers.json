@@ -1,0 +1,32 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Main app (read only)",
+      "Group": "Challenge databases",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "main_db",
+      "DBRestriction": "main_db",
+      "Username": "main_reader",
+      "ConnectionParameters": {
+        "sslmode": "prefer",
+        "connect_timeout": 5,
+        "passfile": "/var/lib/pgadmin/pgpass"
+      }
+    },
+    "2": {
+      "Name": "Auth service (read only)",
+      "Group": "Challenge databases",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "auth_db",
+      "DBRestriction": "auth_db",
+      "Username": "auth_reader",
+      "ConnectionParameters": {
+        "sslmode": "prefer",
+        "connect_timeout": 5,
+        "passfile": "/var/lib/pgadmin/pgpass"
+      }
+    }
+  }
+}

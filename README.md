@@ -31,6 +31,12 @@ make app-import                # Rerun the content import safely
 
 Ports, Django secrets, separate database passwords, the introspection service credential, and the initial demo password are configured in `.env.app`; names and defaults are documented in `.env.app.example`. `make app-env` creates this file once without printing or overwriting secrets. PostgreSQL listens locally on 55432 and the isolated source MariaDB on 53306 by default. This is a local development configuration; deployment/TLS are outside the exercise.
 
+To inspect the imported PostgreSQL data, run `make db-viewer` and open <http://127.0.0.1:5050>. This starts the optional pgAdmin container with two saved connections: **Main app (read only)** and **Auth service (read only)**. It uses local desktop mode, so no pgAdmin login or database-password entry is needed. The web port binds only to `127.0.0.1`.
+
+Expand a connection → Databases → `main_db` or `auth_db` → Schemas → public → Tables. Right-click a table and choose **View/Edit Data → All Rows**; despite that menu's name, PostgreSQL denies writes to these reader accounts. Start with `catalog_brand`, `catalog_review`, `catalog_reviewer`, or `accounts_user`.
+
+The viewer uses separate `main_reader`/`auth_reader` credentials, each restricted to its own application database, with SELECT permissions on existing and future app-created tables/sequences. Generated reader passwords stay in ignored `.pgadmin/` and a private pgAdmin password file. Rerunning `make db-viewer` preserves them and reapplies read grants. Stop only the viewer with `docker compose stop pgadmin`. Configuration follows the [official pgAdmin container documentation](https://www.pgadmin.org/docs/pgadmin4/9.19/container_deployment.html); this is database inspection tooling, separate from the application's editor role.
+
 ## Architecture and modeling
 
 | Location | Owns |

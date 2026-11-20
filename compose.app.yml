@@ -84,6 +84,21 @@ services:
       interval: 3s
       timeout: 5s
       retries: 40
+  pgadmin:
+    image: dpage/pgadmin4:9.19
+    profiles: ["database-tools"]
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: unused-in-local-desktop-mode
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+      PGADMIN_DISABLE_POSTFIX: "1"
+    ports: ["127.0.0.1:${PGADMIN_PORT:-5050}:80"]
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./scripts/pgadmin_servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      postgres: {condition: service_healthy}
   frontend:
     image: node:24-bookworm-slim
     profiles: ["dev"]
@@ -97,3 +112,4 @@ volumes:
   app_postgres_data:
   import_source_data:
   frontend_modules:
+  pgadmin_data:
